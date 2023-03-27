@@ -1,104 +1,62 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
-#define TRUE 1
-#define FALSE 0
+int stack[10001] = { 0 };
+int idx = 0;
 
-typedef int Data;
-
-typedef struct _node {
-	Data data;
-	struct _node* next;
-}Node;
-
-typedef struct _listStack {
-
-	Node* head;
-	int numofdata;
-}ListStack;
-
-typedef ListStack Stack;
-
-
-
-
-void Stackinit(Stack* pstack) {
-	pstack->head = NULL;
-	pstack->numofdata = 0;
+void push(int n) {
+	stack[idx] = n;
+	idx++;
 }
-int Sisempty(Stack* pstack) {
-	if (pstack->head == NULL)
-		return TRUE;
+void pop(void) {
+	if (idx == 0)
+		printf("-1\n");
+	else if (idx > 0) {
+		idx--;
+		printf("%d\n", stack[idx]);
+		stack[idx] = 0;
+	}
+}
+void size(void) {
+	printf("%d\n", idx);
+}
+void empty(void) {
+	if (idx == 0)
+		printf("1\n");
 	else
-		return FALSE;
+		printf("0\n");
 }
-
-void Stackpush(Stack* pstack, Data data) {
-	Node* newnode = (Node*)malloc(sizeof(Node));
-	newnode->data = data;
-	newnode->next = pstack->head;
-	pstack->head = newnode;
-	(pstack->numofdata)++;
-}
-Data Stackpop(Stack* pstack) {
-
-	Data temp;
-	Node* tnode;
-
-	if (Sisempty(pstack)) {
-		return -1;
-	}
-
-	temp = pstack->head->data;
-	tnode = pstack->head;
-
-	pstack->head = pstack->head->next;
-
-	free(tnode);
-	(pstack->numofdata)--;
-	return temp;
-}
-Data Stackseek(Stack* pstack) {
-
-	if (Sisempty(pstack)) {
-		return -1;
-	}
-
-	return(pstack->head->data);
+void top(void) {
+	if (idx == 0)
+		printf("-1\n");
+	else
+		printf("%d\n", stack[idx - 1]);
 }
 
 
-
-int main() {
-	Stack stack;
-	short n;
-	char con[6];
-	int num;
-	Stackinit(&stack);
-	scanf("%hd", &n);
-	getchar();
-	while (n--) {
-		scanf("%s", con);
-
-		if (con[0]=='p' && con[1]=='u') {
+int main()
+{
+	int n, i, num;
+	char s[10];
+	scanf("%d", &n);
+	for (i = 0; i < n; i++)
+	{
+		scanf("%s", s);
+		if (strcmp(s, "push") == 0) {
 			scanf("%d", &num);
-			Stackpush(&stack, num);
-			getchar();
+			push(num);
 		}
-		else if (con[0] == 'p') {
-			printf("%d\n", Stackpop(&stack));
+		if (strcmp(s, "pop") == 0) {
+			pop();
 		}
-		else if (con[0] == 's') {
-			printf("%d\n", stack.numofdata);
+		if (strcmp(s, "size") == 0) {
+			size();
 		}
-		else if (con[0] == 'e') {
-			printf("%d\n", Sisempty(&stack));
+		if (strcmp(s, "empty") == 0) {
+			empty();
 		}
-		else  {
-			printf("%d\n", Stackseek(&stack));
+		if (strcmp(s, "top") == 0) {
+			top();
 		}
-
-
 	}
-
 }
