@@ -17,12 +17,7 @@ int is_valid(char * input){
         cursor++;
     }
 
-    if(left == 0){
-        return 1;
-    }
-    else{
-        return 0;
-    }
+    return left == 0 ? 1 : 0;
 }
 
 int main(){
